@@ -2,6 +2,8 @@ import {
   BulbOutlined,
   CloseOutlined,
   CommentOutlined,
+  DeleteFilled,
+  DownloadOutlined,
   EditFilled,
   EllipsisOutlined,
   FileImageOutlined,
@@ -20,13 +22,14 @@ import {
   Input,
   Layout,
   Modal,
+  Popover,
   Typography,
 } from 'antd';
 import { useState } from 'react';
 
 const { Content } = Layout;
 const { Text } = Typography;
-const { TextArea } = Input;
+const { TextArea, Search } = Input;
 
 export default function BoardPage() {
   return (
@@ -145,7 +148,7 @@ function CardContainer() {
       <Modal
         centered
         open={cardOpen}
-        width={660}
+        width={680}
         onClose={() => setCardOpen(false)}
         onCancel={() => setCardOpen(false)}
         destroyOnClose
@@ -203,8 +206,12 @@ function CardContainer() {
                       Reasoning by Ranganath Krishnamani
                     </p>
                     <Flex className="space-x-2">
-                      <Button size="small">Download</Button>
-                      <Button size="small">Delete</Button>
+                      <Button size="small" icon={<DownloadOutlined />}>
+                        Download
+                      </Button>
+                      <Button size="small" danger icon={<DeleteFilled />}>
+                        Delete
+                      </Button>
                     </Flex>
                   </div>
                 </Flex>
@@ -238,7 +245,7 @@ function CardContainer() {
                     <Button type="text" size="small">
                       Edit
                     </Button>
-                    <Button type="text" size="small">
+                    <Button danger type="text" size="small">
                       Delete
                     </Button>
                   </Flex>
@@ -251,14 +258,127 @@ function CardContainer() {
             </ul>
           </section>
           <section>
-            <p className="font-semibold text-gray-500 text-sm mb-3">
+            <p className="font-medium text-gray-500 text-sm mb-3">
               <UserOutlined /> Actions
             </p>
-            <div className="flex flex-col space-y-3">
-              <Button icon={<UsergroupAddOutlined />}>Members</Button>
-              <Button icon={<BulbOutlined />}>Labels</Button>
-              <Button icon={<FileImageOutlined />}>Cover</Button>
+            <div className="flex flex-col space-y-3 mb-5">
+              <Popover
+                content={
+                  <>
+                    <p className="text-xs text-gray-500 mb-3">
+                      Search Unsplash for cover photo
+                    </p>
+                    <Search
+                      enterButton
+                      placeholder="Keywords..."
+                      className="mb-5"
+                    />
+                    <div className="grid grid-cols-4 gap-x-2 gap-y-3">
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                      <div className="bg-gray-200 rounded h-[50px]"></div>
+                    </div>
+                  </>
+                }
+                placement="bottomLeft"
+                trigger={'click'}
+                title="Photo Search"
+              >
+                <Button icon={<FileImageOutlined />}>Cover</Button>
+              </Popover>
+              <Popover
+                title="Label"
+                content={
+                  <>
+                    <p className="text-xs text-gray-500 mb-3">
+                      Enter a label name and color
+                    </p>
+                    <Input placeholder="Enter label name" className="mb-4" />
+                    <div className="grid grid-cols-4 gap-x-2 gap-y-3 mb-4">
+                      <div className="bg-green-400 rounded h-[27px]"></div>
+                      <div className="bg-yellow-400 rounded h-[27px]"></div>
+                      <div className="bg-orange-400 rounded h-[27px]"></div>
+                      <div className="bg-red-400 rounded h-[27px]"></div>
+                      <div className="bg-blue-400 rounded h-[27px]"></div>
+                      <div className="bg-sky-400 rounded h-[27px]"></div>
+                      <div className="bg-emerald-400 rounded h-[27px]"></div>
+                      <div className="bg-gray-400 rounded h-[27px]"></div>
+                    </div>
+                    <p className="text-gray-500 text-xs font-medium mb-2">
+                      Available
+                    </p>
+                    <Flex className="space-x-2 mb-5">
+                      <p className="bg-sky-200 text-sky-600 px-2 py-0.5 rounded-full text-xs">
+                        Technical
+                      </p>
+                      <p className="bg-emerald-200 text-emerald-600 px-2 py-0.5 rounded-full text-xs">
+                        Design
+                      </p>
+                    </Flex>
+                    <Button type="primary" className="block mx-auto">
+                      Add
+                    </Button>
+                  </>
+                }
+                placement="bottomLeft"
+                trigger={'click'}
+              >
+                <Button icon={<BulbOutlined />}>Labels</Button>
+              </Popover>
             </div>
+            <p className="font-medium text-gray-500 text-sm mb-3">
+              <UsergroupAddOutlined /> Members
+            </p>
+            <ul className="space-y-4 mb-5">
+              <li className="flex items-center space-x-2">
+                <Avatar className="flex-shrink-0">JD</Avatar>
+                <p className="font-semibold text-sm">Johnny Depp</p>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Avatar className="flex-shrink-0">HC</Avatar>
+                <p className="font-semibold text-sm">Henry Cavill</p>
+              </li>
+            </ul>
+            <Popover
+              content={
+                <>
+                  <p className="text-xs text-gray-500 mb-3">
+                    Assign members to this card
+                  </p>
+                  <Search
+                    placeholder="Search member"
+                    enterButton
+                    className="mb-2.5"
+                  />
+                  <ul className="mb-5 py-3">
+                    <li className="flex items-center space-x-2">
+                      <Avatar>KR</Avatar>
+                      <p className="text-xs font-medium">Keanu Reeves</p>
+                    </li>
+                  </ul>
+                  <Button type="primary" className="mx-auto block">
+                    Invite
+                  </Button>
+                </>
+              }
+              trigger={'click'}
+              placement="bottomLeft"
+              title="Members"
+            >
+              <Button
+                type="primary"
+                ghost
+                icon={<PlusOutlined />}
+                iconPosition="end"
+                size="small"
+                className="text-xs"
+              >
+                Assign a member
+              </Button>
+            </Popover>
           </section>
         </div>
       </Modal>
